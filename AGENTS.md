@@ -43,7 +43,8 @@ ArkTS Wearable. Network proxy support needs real-watch verification.
 The default SDK is in /Applications/DevEco-Studio.app/Contents. Set
 DEVECO_STUDIO_HOME for another installation. Build uses bundled Node/Java.
 `npm run build` creates unsigned .hap/.app packages in dist and validates the
-compiled bundle and JerryScript snapshot. Visual preview uses the IDE Simulator.
+compiled bundle and JerryScript snapshot; it fails when the page no longer fits
+the snapshot compiler's 48 KB heap. Visual preview uses the IDE Simulator.
 
 Signing, btproxy on hardware, iPhone behavior, coexistence with workouts, and
 store acceptance require separate checks. Do not infer these from packaging.
