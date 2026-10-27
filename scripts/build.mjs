@@ -1,27 +1,42 @@
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 import { deveco, run } from "./deveco.mjs";
 import { syncVersion } from "./sync-app-version.mjs";
 import "./prepare-app.mjs";
 
-syncVersion(process.cwd());
 const { home, node, env } = deveco();
 const mode = process.argv.includes("--debug") ? "debug" : "release";
-run(
-  node,
-  [
-    join(home, "tools/hvigor/bin/hvigorw.js"),
-    "--mode",
-    "project",
-    "-p",
-    "product=default",
-    "-p",
-    "buildMode=" + mode,
-    "assembleApp",
-    "--no-daemon",
-  ],
-  env
-);
+const manifest = "entry/src/main/config.json";
+const tracked = readFileSync(manifest, "utf8");
+syncVersion(process.cwd());
+try {
+  run(
+    node,
+    [
+      join(home, "tools/hvigor/bin/hvigorw.js"),
+      "--mode",
+      "project",
+      "-p",
+      "product=default",
+      "-p",
+      "buildMode=" + mode,
+      "assembleApp",
+      "--no-daemon",
+    ],
+    env
+  );
+} finally {
+  // The derived version code belongs in the package, not in the tracked manifest.
+  writeFileSync(manifest, tracked);
+}
 run(process.execPath, ["scripts/check-native-bundle.mjs"]);
 const snapshot = join(
   home,
