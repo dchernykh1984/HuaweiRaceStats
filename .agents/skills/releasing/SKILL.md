@@ -1,0 +1,8 @@
+---
+name: releasing
+description: Release-please, Huawei versions and native packages.
+---
+
+# Releasing
+
+release-please owns package.json and CHANGELOG. It writes the manifest version name; version:sync computes code = major*10000 + minor*100 + patch. Bootstrap starts at 0.0.0 so the first feature releases 0.1.0. Build and Distribute needs a trusted self-hosted macOS runner labeled huawei-sdk with DevEco 6.1.1. Unsigned HAP/APP packages are not store-ready uploads. Never release, tag or merge without authorization. Read docs/releasing.md.

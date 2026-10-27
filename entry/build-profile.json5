@@ -1,0 +1,9 @@
+{
+  apiType: "faMode",
+  targets: [
+    {
+      name: "default",
+    },
+  ],
+  buildOption: {},
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "bcb4b64fd22658c1653cf6d120f0e482e8bcbc28",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "huawei-race-stats",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "entry/src/main/config.json",
+          "jsonpath": "$.app.version.name"
+        }
+      ]
+    }
+  }
+}

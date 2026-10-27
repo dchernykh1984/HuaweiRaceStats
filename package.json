@@ -1,0 +1,29 @@
+{
+  "name": "huawei-race-stats",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Live race standing on Huawei Lite Wearable watches.",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "version:sync": "node scripts/sync-app-version.mjs",
+    "version:check": "node scripts/sync-app-version.mjs --check",
+    "build": "node scripts/build.mjs",
+    "prepare:app": "node scripts/prepare-app.mjs",
+    "test:native": "node scripts/check-native-bundle.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9",
+    "vitest": "^5.0.2"
+  }
+}
