@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { dashboardCells, dashboardBands, screenFor } from "../lib/dashboard.js";
 import { METRICS } from "../lib/metrics.js";
+import { maxFields } from "../lib/layout.js";
+import { LANGUAGES } from "../lib/i18n/index.js";
 
 describe("watch dashboard", () => {
   it("normalizes actual round and rectangular device dimensions", () => {
@@ -38,5 +40,31 @@ describe("watch dashboard", () => {
       screenFor(null)
     );
     expect(cells.map((cell) => cell.value)).toEqual(["17/84", "+0:12"]);
+  });
+  it("fits every language's captions and long values in both shapes at every field count", () => {
+    // The widest values the server sends: a long gap, a three-digit place and a pack size.
+    const stats = { place_abs: "123", qty_abs: "456", gap_prev_abs: "+1:23:45", laps: "12" };
+    for (const info of [{}, { windowWidth: 390, windowHeight: 450, screenShape: "rect" }]) {
+      const screen = screenFor(info);
+      for (const language of LANGUAGES) {
+        for (let count = 1; count <= maxFields(screen.round); count++) {
+          for (let start = 0; start < METRICS.length; start += count) {
+            const metrics = Array.from({ length: count }, (_, i) => {
+              return METRICS[(start + i) % METRICS.length];
+            });
+            for (const cell of dashboardCells(metrics, stats, language, screen)) {
+              const where = `${language} ${count} ${screen.round ? "round" : "rect"} '${cell.label}'`;
+              expect(cell.labelSize * 0.55 * cell.label.length, where).toBeLessThanOrEqual(
+                cell.width
+              );
+              expect(cell.valueSize * 0.6 * cell.value.length, where).toBeLessThanOrEqual(
+                cell.width
+              );
+              expect(cell.labelSize + cell.valueSize, where).toBeLessThanOrEqual(cell.height);
+            }
+          }
+        }
+      }
+    }
   });
 });

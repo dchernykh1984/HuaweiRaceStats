@@ -39,7 +39,7 @@
 - `test/layout.test.mjs`, `test/round-geometry.test.mjs`: row patterns and chord
   widths.
 - `test/dashboard.test.mjs`: every cell stays inside both shapes for 1 to 10
-  fields.
+  fields, and every language's captions and the longest values fit their cells.
 - `test/i18n.test.mjs`: every language has every metric and every settings word
   within its budget.
 - `npm run build`: the snapshot compiles; the compiled page shows Russian
