@@ -42,8 +42,9 @@
   fields, and every language's captions and the longest values fit their cells.
 - `test/i18n.test.mjs`: every language has every metric and every settings word
   within its budget.
-- `npm run build`: the snapshot compiles; the compiled page shows Russian
-  settings words on a Russian watch.
+- `npm run build`: the snapshot compiles; the compiled page, run without RegExp
+  or `String.prototype.replace` as on the watch, picks Russian on a Russian watch
+  and shows Russian settings words.
 
 ## Needs real hardware
 

@@ -54,8 +54,10 @@ missing IDE resources; it is not counted as a successful visual preview.
 Every npm run build instead performs a compiled-bundle smoke check and invokes
 Huawei's JerryScript snapshot compiler. These catch unbundled imports, reserved
 page-method names and unsupported ES5 syntax even when Hvigor reports success.
-Lite Wearable does not accept RegExp literals in this SDK; use indexed loops and
-ES5 string operations. The small runtime shim supplies shared numeric checks.
+Lite Wearable does not accept RegExp literals in this SDK, and its JerryScript
+has no RegExp, so `String.prototype.replace`, `match` and `search` do not exist
+on the watch; use indexed loops, `indexOf`, `slice` and `split`. ESLint rejects
+them in `lib/` and `entry/`, and the compiled-bundle check removes them. The small runtime shim supplies shared numeric checks.
 The snapshot compiler runs in a 48 KB JerryScript heap, so the whole page bundle
 (bytecode and string literals) must fit there. Hvigor only warns when it does not
 and then ships plain JavaScript; `npm run build` fails instead. Translations are

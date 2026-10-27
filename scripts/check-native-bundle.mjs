@@ -72,14 +72,17 @@ const context = {
   },
 };
 
-// Exercise the actual SDK bundle with ES5 numeric builtins and no Node require.
+// Exercise the actual SDK bundle with ES5 numeric builtins, no Node require and,
+// as on Lite JerryScript, no RegExp or the String methods built on it.
 runInNewContext(
-  "Number.isFinite = undefined; Number.isInteger = undefined; Number.isSafeInteger = undefined; Number.isNaN = undefined;",
+  "Number.isFinite = undefined; Number.isInteger = undefined; Number.isSafeInteger = undefined; Number.isNaN = undefined;" +
+    "RegExp = undefined; String.prototype.replace = String.prototype.match = String.prototype.search = undefined;",
   context
 );
 runInNewContext(source, context);
 page.onInit();
 assert.equal(page.screen, "stats");
+assert.equal(page.language, "ru");
 assert.equal(page.bands[0].cells[0].value, "17/84");
 assert.equal(requests, 1);
 assert.match(JSON.stringify(page.render()), /17\/84/);

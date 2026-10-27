@@ -43,6 +43,7 @@ describe("resolveLanguage", () => {
     expect(resolveLanguage("en_US")).toBe("en");
     expect(resolveLanguage("kk-KZ")).toBe("kk");
     expect(resolveLanguage("de")).toBe("de");
+    expect(resolveLanguage("RU_kz")).toBe("ru");
   });
 
   it("falls back to the default for unknown or empty locales", () => {
