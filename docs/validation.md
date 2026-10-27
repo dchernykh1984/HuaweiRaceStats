@@ -26,9 +26,13 @@ layouts, configurable fields and the same server endpoint are present.
 
 ## Not yet verified
 
-Full visual rendering in the IDE Simulator has not been verified. A console-only
-backend probe reached app initialization but reported missing IDE font/IPC
-resources, so it is not claimed as a passing visual test.
+The Simulator backend, run from the console with a small frame viewer, rendered
+the results (round diamond up to 9 fields and rectangular grid, Russian and
+English), settings, keyboard and metric list, and accepted long press, taps,
+scrolling and right swipes. It exposed the missing `String.prototype.replace`
+and wrapped settings rows, both fixed. Because the backend has no network module
+and no writable storage, data and Save were previewed with a saved server reply
+and in-memory storage. The IDE-run Simulator was not checked.
 
 No physical Huawei watch or paired phone was tested. Verify supported firmware's
 Bluetooth network proxy, real server responses, screen fonts and clipping,
