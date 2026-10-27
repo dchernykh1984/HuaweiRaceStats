@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { editorKeys, appendKey, visibleTail, EDIT_LINE_CHARS } from "../lib/editor.js";
 import { MAX_STORED_LENGTH } from "../lib/config.js";
+import { validSiteUrl } from "../lib/request-url.js";
 
 describe("watch keyboard", () => {
   it("provides numeric race IDs, alphanumeric bibs and URL punctuation", () => {
@@ -18,5 +19,9 @@ describe("watch keyboard", () => {
     const url = "https://universalbicycle.team/results";
     expect(visibleTail(url)).toHaveLength(EDIT_LINE_CHARS);
     expect(visibleTail(url)).toBe("..." + url.slice(-(EDIT_LINE_CHARS - 3)));
+  });
+  it("offers only URL keys that can appear in a valid site URL", () => {
+    for (const key of editorKeys("siteUrl"))
+      expect(validSiteUrl("https://example.org/a" + key), key).toBe(true);
   });
 });
