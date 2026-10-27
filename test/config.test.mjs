@@ -8,6 +8,7 @@ import {
   MAX_STORED_LENGTH,
 } from "../lib/config.js";
 import { appendKey } from "../lib/editor.js";
+import { uiTexts } from "../lib/i18n/index.js";
 
 // The documented Lite @system.storage limits: a key of at most 32 characters
 // without \/"*+,:;<=>?[]| and a value under 128 bytes.
@@ -54,6 +55,8 @@ describe("persisted watch settings", () => {
     expect(configError({ ...config, siteUrl: "https://user:password@example.org" })).not.toBe("");
     expect(configError({ ...config, competitionId: "0" })).not.toBe("");
     expect(configError({ ...config, bib: " " })).not.toBe("");
+    for (const bad of [{ siteUrl: "x" }, { competitionId: "x" }, { bib: "" }])
+      expect(uiTexts("en")).toHaveProperty(configError({ ...config, ...bad }));
   });
 });
 

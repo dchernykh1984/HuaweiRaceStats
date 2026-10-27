@@ -42,7 +42,7 @@ keyboard supports numeric race IDs, alphanumeric bibs and site URLs (up to 127
 characters, the Lite storage limit). Tap Save to persist, or Cancel to discard.
 Swipe right to go back, or to close the app from the results. Scroll the
 settings and keyboard lists. Metric
-captions follow the watch language; settings controls are English, as in Amazfit.
+captions and the settings screens follow the watch language (English otherwise).
 Round screens display at most 9 fields; rectangular screens display up to 10.
 
 `lib/` contains the tested logic. `entry/` is the thin Huawei runtime.
