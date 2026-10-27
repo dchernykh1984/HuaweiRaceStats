@@ -1,4 +1,5 @@
 import "../../common/runtime.js";
+import app from "@system.app";
 import device from "@system.device";
 import { loadConfig, saveConfig, requestStats } from "../../common/platform.js";
 import { defaultConfig, configError } from "../../common/lib/config.js";
@@ -62,12 +63,14 @@ export default {
     if (this._poller) this._poller.stop();
   },
 
-  onBackPress() {
-    if (this.screen === "stats") return false;
-    if (this.saving) return true;
-    if (this.screen === "settings") this.cancelSettings();
+  // Lite pages receive no back event, so a right swipe steps back and leaves the
+  // app from the results, as Huawei watch apps do.
+  swipeBack(event) {
+    if (!event || event.direction !== "right") return;
+    if (this.screen === "stats") app.terminate();
+    else if (this.saving) return;
+    else if (this.screen === "settings") this.cancelSettings();
     else this.screen = "settings";
-    return true;
   },
 
   configurePoller(keepStats = false) {

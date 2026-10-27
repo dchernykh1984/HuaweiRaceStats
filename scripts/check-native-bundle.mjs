@@ -10,11 +10,13 @@ let page;
 const persisted = {};
 let writable = true;
 let requests = 0;
+let terminated = 0;
 const context = {
   console,
   _c(type, properties = {}, children = []) {
     const value = properties.attrs && properties.attrs.value;
-    return { type, value: typeof value === "function" ? value() : value, children };
+    const events = Object.keys(properties.onBubbleEvents || {});
+    return { type, value: typeof value === "function" ? value() : value, events, children };
   },
   _i(condition, render) {
     return condition() ? render() : null;
@@ -25,6 +27,7 @@ const context = {
   setTimeout: () => 1,
   clearTimeout() {},
   requireNative(name) {
+    if (name === "system.app") return { terminate: () => terminated++ };
     if (name === "system.device")
       return {
         getInfo: ({ success }) =>
@@ -93,6 +96,16 @@ page.applySettings();
 assert.equal(persisted.competitionId, "533");
 assert.equal(persisted.rowMetric0, "15");
 assert.equal(page.screen, "stats");
+page.openSettings();
+page.edit("bib");
+page.swipeBack({ direction: "left" });
+assert.equal(page.screen, "edit");
+page.swipeBack({ direction: "right" });
+assert.equal(page.screen, "settings");
+page.swipeBack({ direction: "right" });
+assert.equal(page.screen, "stats");
+page.swipeBack({ direction: "right" });
+assert.equal(terminated, 1);
 page.onHide();
 const hiddenRequests = requests;
 page._poller.refresh();
@@ -101,5 +114,5 @@ page.onShow();
 assert.equal(requests, hiddenRequests + 1);
 page.onDestroy();
 console.log(
-  "Compiled Huawei bundle: imports, dashboard, keyboard, settings persistence and page lifecycle passed."
+  "Compiled Huawei bundle: imports, dashboard, keyboard, settings persistence, swipe back and page lifecycle passed."
 );
