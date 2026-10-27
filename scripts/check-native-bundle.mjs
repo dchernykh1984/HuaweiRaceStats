@@ -14,6 +14,8 @@ const persisted = {};
 let writable = true;
 let requests = 0;
 let terminated = 0;
+let holdReplies = false;
+let heldReply = null;
 const context = {
   console,
   _c(type, properties = {}, children = []) {
@@ -53,10 +55,13 @@ const context = {
       return {
         fetch: ({ success }) => {
           requests++;
-          success({
-            code: 200,
-            data: { stats: { place_abs: "17", qty_abs: "84", future: "ignored" } },
-          });
+          const reply = () =>
+            success({
+              code: 200,
+              data: { stats: { place_abs: "17", qty_abs: "84", future: "ignored" } },
+            });
+          if (holdReplies) heldReply = reply;
+          else reply();
         },
       };
     throw new Error("Unexpected native module: " + name);
@@ -107,10 +112,22 @@ page.applySettings();
 assert.equal(page.screen, "settings");
 assert.equal(page.error, UI.ru.saveFailed);
 writable = true;
+holdReplies = true;
 page.applySettings();
 assert.equal(persisted.competitionId, "533");
 assert.equal(persisted.rowMetric0, "15");
 assert.equal(page.screen, "stats");
+// A different race starts empty instead of showing the previous rider's standing.
+assert.equal(page._stats, null);
+heldReply();
+assert.equal(page._stats.place_abs, "17");
+page.openSettings();
+page.changeCount(1);
+page.applySettings();
+// Changing only the fields keeps the standing while the next reply is pending.
+assert.equal(page._stats.place_abs, "17");
+holdReplies = false;
+heldReply();
 page.openSettings();
 page.edit("bib");
 page.swipeBack({ direction: "left" });

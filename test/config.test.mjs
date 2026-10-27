@@ -3,6 +3,7 @@ import {
   defaultConfig,
   parseConfig,
   configError,
+  sameRider,
   loadConfig,
   saveConfig,
   MAX_STORED_LENGTH,
@@ -57,6 +58,15 @@ describe("persisted watch settings", () => {
     expect(configError({ ...config, bib: " " })).not.toBe("");
     for (const bad of [{ siteUrl: "x" }, { competitionId: "x" }, { bib: "" }])
       expect(uiTexts("en")).toHaveProperty(configError({ ...config, ...bad }));
+  });
+});
+
+describe("rider changes", () => {
+  it("keep standings only while the site, race and bib stay the same", () => {
+    const config = defaultConfig();
+    expect(sameRider(config, { ...config, rowCount: "9", rowMetric0: "5" })).toBe(true);
+    for (const change of [{ siteUrl: "https://example.org" }, { competitionId: "7" }, { bib: "2" }])
+      expect(sameRider(config, { ...config, ...change })).toBe(false);
   });
 });
 

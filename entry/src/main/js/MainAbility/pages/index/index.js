@@ -2,7 +2,7 @@ import "../../common/runtime.js";
 import app from "@system.app";
 import device from "@system.device";
 import { loadConfig, saveConfig, requestStats } from "../../common/platform.js";
-import { defaultConfig, configError } from "../../common/lib/config.js";
+import { defaultConfig, configError, sameRider } from "../../common/lib/config.js";
 import { createPoller } from "../../common/lib/polling.js";
 import { dashboardBands, screenFor } from "../../common/lib/dashboard.js";
 import { editorKeys, appendKey, visibleTail } from "../../common/lib/editor.js";
@@ -200,12 +200,8 @@ export default {
         this.error = this.ui.saveFailed;
         return;
       }
-      const previous = JSON.parse(this._saved);
-      const sameRider = ["siteUrl", "competitionId", "bib"].every(
-        (key) => previous[key] === this.config[key]
-      );
       this.screen = "stats";
-      this.configurePoller(sameRider);
+      this.configurePoller(sameRider(JSON.parse(this._saved), this.config));
     });
   },
 };
