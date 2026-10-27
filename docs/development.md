@@ -46,10 +46,14 @@ This is a manual user action; the agent does not automate the Mac interface.
 Official reference:
 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-run-simulator
 
-The bundled Simulator backend is callable from the console, but full visual
-preview also depends on IDE-provided fonts, persistent settings and IPC. A direct
-backend launch reached app initialization during development but still reported
-missing IDE resources; it is not counted as a successful visual preview.
+The bundled Simulator backend (`sdk/default/openharmony/previewer/liteWearable/bin/Simulator`)
+also runs from the console when started from its own directory (fonts are found
+relative to it). It sends JPEG frames with a 40-byte header over the WebSocket
+port given by `-lws` and reads mouse commands from the Unix socket
+`/tmp/<-s name>_commandPipe`. It has no `system.fetch` module, writes storage to
+`/user/data/` (absent on macOS, so every `storage.set` fails) and always reports
+a `rect` screen and `zh`. Live data, Save and the round layout therefore need a
+patched preview copy of the bundle, or the IDE.
 
 Every npm run build instead performs a compiled-bundle smoke check and invokes
 Huawei's JerryScript snapshot compiler. These catch unbundled imports, reserved
@@ -57,7 +61,8 @@ page-method names and unsupported ES5 syntax even when Hvigor reports success.
 Lite Wearable does not accept RegExp literals in this SDK, and its JerryScript
 has no RegExp, so `String.prototype.replace`, `match` and `search` do not exist
 on the watch; use indexed loops, `indexOf`, `slice` and `split`. ESLint rejects
-them in `lib/` and `entry/`, and the compiled-bundle check removes them. The small runtime shim supplies shared numeric checks.
+them in `lib/` and `entry/`, and the compiled-bundle check removes them. The
+small runtime shim supplies shared numeric checks.
 The snapshot compiler runs in a 48 KB JerryScript heap, so the whole page bundle
 (bytecode and string literals) must fit there. Hvigor only warns when it does not
 and then ships plain JavaScript; `npm run build` fails instead. Translations are
