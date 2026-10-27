@@ -1,0 +1,13 @@
+node_modules/
+**/build/
+.hvigor/
+.ohpm/
+dist/
+coverage/
+package-lock.json
+CHANGELOG.md
+entry/src/main/config.json
+entry/src/main/js/MainAbility/common/lib/
+.claude/
+.agents/
+.codex/

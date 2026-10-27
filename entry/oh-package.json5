@@ -1,0 +1,6 @@
+{
+  name: "entry",
+  version: "0.1.0",
+  description: "Live race standing on Huawei Lite Wearable watches.",
+  dependencies: {},
+}

@@ -1,0 +1,49 @@
+name: Build and Distribute
+on:
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to build
+        default: main
+        type: string
+      tag:
+        description: Optional existing release tag to attach packages to
+        default: ""
+        type: string
+permissions:
+  contents: read
+jobs:
+  build-huawei:
+    # Install the vendor SDK on a trusted runner before enabling releases.
+    # Never run unreviewed pull requests on this runner.
+    runs-on: [self-hosted, macOS, huawei-sdk]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || inputs.ref }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - run: npm ci
+      - name: Build using the installed DevEco SDK
+        run: npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: huawei-race-stats-packages
+          path: |
+            dist/*.hap
+            dist/*.app
+          if-no-files-found: error
+      - name: Attach packages to the existing release
+        if: inputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: gh release upload "$RELEASE_TAG" dist/*.hap dist/*.app --clobber

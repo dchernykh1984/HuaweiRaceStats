@@ -1,0 +1,5 @@
+{
+  modelVersion: "6.0.0",
+  description: "Live race standing on Huawei Lite Wearable watches.",
+  dependencies: {},
+}

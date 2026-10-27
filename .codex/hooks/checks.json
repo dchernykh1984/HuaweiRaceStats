@@ -1,0 +1,4 @@
+{
+  "files": "\\.(m?js|ts|css|hml|ya?ml|md|json5?|py)$",
+  "exclude": "(package-lock\\.json$|CHANGELOG\\.md$|/i18n/)"
+}

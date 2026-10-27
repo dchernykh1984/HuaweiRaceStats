@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "Live Race Stats"
+    },
+    {
+      "name": "app_description",
+      "value": "Live race place, gaps, lap dynamics and laps."
+    }
+  ]
+}
