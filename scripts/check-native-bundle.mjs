@@ -7,7 +7,7 @@ const source = readFileSync(
   "utf8"
 );
 let page;
-let persisted = "";
+const persisted = {};
 let writable = true;
 let requests = 0;
 const context = {
@@ -32,13 +32,14 @@ const context = {
       };
     if (name === "system.storage")
       return {
-        get: ({ success }) => success(persisted),
-        set: ({ value, success, fail }) => {
-          if (!writable) {
+        get: ({ key, success }) => success(key in persisted ? persisted[key] : ""),
+        // Lite storage limits: keys up to 32 characters, values under 128 bytes.
+        set: ({ key, value, success, fail }) => {
+          if (!writable || key.length > 32 || Buffer.byteLength(value) >= 128) {
             fail();
             return;
           }
-          persisted = value;
+          persisted[key] = value;
           success();
         },
       };
@@ -89,7 +90,8 @@ assert.equal(page.screen, "settings");
 assert.match(page.error, /Could not save/);
 writable = true;
 page.applySettings();
-assert.equal(JSON.parse(persisted).competitionId, "533");
+assert.equal(persisted.competitionId, "533");
+assert.equal(persisted.rowMetric0, "15");
 assert.equal(page.screen, "stats");
 page.onHide();
 const hiddenRequests = requests;

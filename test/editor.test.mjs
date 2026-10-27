@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { editorKeys, appendKey } from "../lib/editor.js";
+import { MAX_STORED_LENGTH } from "../lib/config.js";
 
 describe("watch keyboard", () => {
   it("provides numeric race IDs, alphanumeric bibs and URL punctuation", () => {
@@ -8,6 +9,8 @@ describe("watch keyboard", () => {
     expect(editorKeys("bib")).toContain("A");
     expect(appendKey("12", "a", "competitionId")).toBe("12");
     expect(appendKey("12", "3", "competitionId")).toBe("123");
-    expect(appendKey("a".repeat(240), "b", "siteUrl")).toHaveLength(240);
+    expect(appendKey("a".repeat(MAX_STORED_LENGTH), "b", "siteUrl")).toHaveLength(
+      MAX_STORED_LENGTH
+    );
   });
 });

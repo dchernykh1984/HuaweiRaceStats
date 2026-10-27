@@ -1,23 +1,32 @@
 import fetch from "@system.fetch";
 import storage from "@system.storage";
-import { CONFIG_KEY, parseConfig } from "./lib/config.js";
+import { loadConfig as loadStored, saveConfig as saveStored } from "./lib/config.js";
 
 export function loadConfig(done) {
-  storage.get({
-    key: CONFIG_KEY,
-    default: "",
-    success: (value) => done(parseConfig(value)),
-    fail: () => done(parseConfig(null)),
-  });
+  loadStored(
+    (key, next) =>
+      storage.get({
+        key,
+        default: "",
+        success: next,
+        fail: () => next(""),
+      }),
+    done
+  );
 }
 
-export function saveConfig(config, done) {
-  storage.set({
-    key: CONFIG_KEY,
-    value: JSON.stringify(config),
-    success: () => done(true),
-    fail: () => done(false),
-  });
+export function saveConfig(value, done) {
+  saveStored(
+    value,
+    (key, text, next) =>
+      storage.set({
+        key,
+        value: text,
+        success: () => next(true),
+        fail: () => next(false),
+      }),
+    done
+  );
 }
 
 export function requestStats(url, done) {
