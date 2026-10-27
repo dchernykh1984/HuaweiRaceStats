@@ -5,7 +5,9 @@
 The app uses Huawei's official [Lite Empty Ability] JavaScript/FA project model.
 The checked-in project compiles with DevEco 6.1.1 / SDK 24 and requires API 10+.
 The native module declares only INTERNET; it does not access Huawei health data.
-The server URL, race ID, bib and field choices are kept in local watch storage.
+The server URL, race ID, bib and field choices are kept in local watch storage,
+one key per setting: Lite `@system.storage` keeps a value only when it is under
+128 bytes, so a single JSON object of all settings would not fit.
 
 `@system.fetch` uses the network capability exposed by compatible watch firmware.
 Huawei documents a [Bluetooth proxy fetch API](https://forums.developer.huawei.com/forumPortal/en/topic/0205201442076523096)
@@ -32,6 +34,9 @@ helpers in `lib/` remain ES modules for tests. Do not edit generated common/lib.
 
 The app uses flex bands instead of unsupported Lite CSS absolute positioning.
 Do not define a `render` method on the page: the compiler owns that name for HML.
+Lite pages only receive onInit, onReady, onShow, onHide and onDestroy; there is
+no onBackPress, so the page treats a right swipe as back and closes the app with
+`app.terminate()` from the results. Settings open on a long press.
 
 ## Simulator
 

@@ -17,7 +17,9 @@ layouts, configurable fields and the same server endpoint are present.
 - npm audit reports zero vulnerabilities after compatible dependency updates.
 - DevEco Studio 6.1.1 / bundled SDK 24 builds actual unsigned HAP and APP packages.
 - The compiled SDK bundle is executed with native API stubs to exercise dashboard
-  rendering, keyboard, metric choices, save failures/retry and page hide/resume.
+  rendering, keyboard, metric choices, Lite storage key/value limits, save
+  failures/retry, long-press and swipe bindings, swipe back, app exit and page
+  hide/resume.
   Huawei's JerryScript compiler also generates a real native snapshot. These
   checks are part of npm run build and fail on invalid generated code.
 
