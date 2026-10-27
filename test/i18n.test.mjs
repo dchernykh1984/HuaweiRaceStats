@@ -13,16 +13,15 @@ describe("locale completeness", () => {
   });
 
   it("defines exactly the metric catalogue in every language", () => {
-    const expected = [...METRICS].sort();
     for (const lang of LANGUAGES) {
-      expect(Object.keys(LABELS[lang]).sort(), lang).toEqual(expected);
+      expect(LABELS[lang].split("|"), lang).toHaveLength(METRICS.length);
     }
   });
 
   it("has a non-empty label within budget for every metric in every language", () => {
     for (const lang of LANGUAGES) {
       for (const metric of METRICS) {
-        const label = LABELS[lang][metric];
+        const label = labelFor(lang, metric);
         expect(typeof label, `${lang}/${metric}`).toBe("string");
         expect(label.length, `${lang}/${metric} '${label}'`).toBeGreaterThan(0);
         expect(label.length, `${lang}/${metric} '${label}'`).toBeLessThanOrEqual(MAX_LABEL);
@@ -48,12 +47,14 @@ describe("resolveLanguage", () => {
 
 describe("labelFor", () => {
   it("returns the localized label for a supported language", () => {
-    expect(labelFor("ru", "place_abs")).toBe(LABELS.ru.place_abs);
-    expect(labelFor("kk", "laps")).toBe(LABELS.kk.laps);
+    expect(labelFor("en", "place_abs")).toBe("Place abs");
+    expect(labelFor("en", "qty_next_pack_abs")).toBe("Size bhd pk");
+    expect(labelFor("ru", "place_abs")).toBe(LABELS.ru.split("|")[0]);
+    expect(labelFor("kk", "laps")).toBe(LABELS.kk.split("|")[METRICS.indexOf("laps")]);
   });
 
   it("falls back to English, then to the raw key", () => {
-    expect(labelFor("ja", "laps")).toBe(LABELS.en.laps);
+    expect(labelFor("ja", "laps")).toBe("Laps");
     expect(labelFor("en", "not_a_metric")).toBe("not_a_metric");
   });
 });
