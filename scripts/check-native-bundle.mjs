@@ -78,7 +78,11 @@ assert.match(JSON.stringify(page.render()), /17\/84/);
 // A stray tap must not leave the results: settings open on a long press.
 assert.deepEqual(page.render().children[0].events, ["longpress", "swipe"]);
 page.openSettings();
-page.changeCount(1);
+for (let i = 0; i < 10; i++) page.changeCount(1);
+// The round watch draws at most 9 fields, so settings offer no 10th.
+assert.equal(page.config.rowCount, "9");
+assert.equal(page.rowChoices.length, 9);
+for (let i = 0; i < 4; i++) page.changeCount(-1);
 page.chooseRow(0);
 page.chooseMetric(15);
 assert.equal(page.config.rowMetric0, "15");

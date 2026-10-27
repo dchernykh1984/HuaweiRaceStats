@@ -6,7 +6,8 @@ import { defaultConfig, configError } from "../../common/lib/config.js";
 import { createPoller } from "../../common/lib/polling.js";
 import { dashboardBands, screenFor } from "../../common/lib/dashboard.js";
 import { editorKeys, appendKey } from "../../common/lib/editor.js";
-import { METRICS, MAX_ROWS } from "../../common/lib/metrics.js";
+import { METRICS } from "../../common/lib/metrics.js";
+import { maxFields } from "../../common/lib/layout.js";
 import { resolveRowMetrics } from "../../common/lib/settings.js";
 import { resolveLanguage, labelFor } from "../../common/lib/i18n/index.js";
 
@@ -118,7 +119,8 @@ export default {
 
   changeCount(delta) {
     if (this.saving) return;
-    const count = Math.max(1, Math.min(MAX_ROWS, Number(this.config.rowCount) + Number(delta)));
+    const limit = maxFields(this._device.round);
+    const count = Math.max(1, Math.min(limit, Number(this.config.rowCount) + Number(delta)));
     this.config.rowCount = String(count);
     this.updateRows();
   },

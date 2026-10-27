@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fieldRows, MAX_FIELDS, MAX_ROUND_FIELDS } from "../lib/layout.js";
+import { fieldRows, maxFields, MAX_FIELDS, MAX_ROUND_FIELDS } from "../lib/layout.js";
 
 describe("fieldRows (round)", () => {
   it("uses the diamond patterns", () => {
@@ -11,6 +11,8 @@ describe("fieldRows (round)", () => {
 
   it("caps at MAX_ROUND_FIELDS (a 4-wide middle row crowds the values)", () => {
     expect(MAX_ROUND_FIELDS).toBe(9);
+    expect(maxFields(true)).toBe(MAX_ROUND_FIELDS);
+    expect(maxFields(false)).toBe(MAX_FIELDS);
     expect(fieldRows(10, true)).toEqual(fieldRows(9, true));
   });
 
