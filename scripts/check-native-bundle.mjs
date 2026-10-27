@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
+import { labelFor, uiTexts } from "../lib/i18n/index.js";
+
+const UI = { ru: uiTexts("ru") };
 
 const source = readFileSync(
   "entry/build/default/intermediates/loader_out_lite/default/js/MainAbility/pages/index/index.js",
@@ -78,6 +81,8 @@ assert.match(JSON.stringify(page.render()), /17\/84/);
 // A stray tap must not leave the results: settings open on a long press.
 assert.deepEqual(page.render().children[0].events, ["longpress", "swipe"]);
 page.openSettings();
+assert.match(JSON.stringify(page.render()), new RegExp(UI.ru.title));
+assert.equal(page.rowChoices[0].label, UI.ru.field + " 1: " + labelFor("ru", "place_abs"));
 for (let i = 0; i < 10; i++) page.changeCount(1);
 // The round watch draws at most 9 fields, so settings offer no 10th.
 assert.equal(page.config.rowCount, "9");
@@ -91,7 +96,7 @@ page.typeKey("/");
 assert.equal(page.editText, "...niversalbicycle.team/");
 page.backToSettings();
 page.edit("competitionId");
-assert.match(JSON.stringify(page.render()), /Race ID/);
+assert.match(JSON.stringify(page.render()), new RegExp(UI.ru.raceId));
 page.clear();
 page.typeKey("5");
 page.typeKey("3");
@@ -100,7 +105,7 @@ page.acceptEdit();
 writable = false;
 page.applySettings();
 assert.equal(page.screen, "settings");
-assert.match(page.error, /Could not save/);
+assert.equal(page.error, UI.ru.saveFailed);
 writable = true;
 page.applySettings();
 assert.equal(persisted.competitionId, "533");

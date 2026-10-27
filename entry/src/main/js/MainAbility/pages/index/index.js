@@ -9,7 +9,9 @@ import { editorKeys, appendKey, visibleTail } from "../../common/lib/editor.js";
 import { METRICS } from "../../common/lib/metrics.js";
 import { maxFields } from "../../common/lib/layout.js";
 import { resolveRowMetrics } from "../../common/lib/settings.js";
-import { resolveLanguage, labelFor } from "../../common/lib/i18n/index.js";
+import { resolveLanguage, labelFor, uiTexts } from "../../common/lib/i18n/index.js";
+
+const EDIT_TITLES = { siteUrl: "siteUrl", competitionId: "raceId", bib: "bibNumber" };
 
 export default {
   data: {
@@ -19,6 +21,7 @@ export default {
     rowChoices: [],
     metricChoices: [],
     language: "en",
+    ui: uiTexts("en"),
     height: 466,
     editTitle: "",
     editValue: "",
@@ -40,6 +43,7 @@ export default {
         this._device = screenFor(info);
         this.height = this._device.height;
         this.language = resolveLanguage(info.language);
+        this.ui = uiTexts(this.language);
         this.updateDashboard();
       },
     });
@@ -114,7 +118,7 @@ export default {
   updateRows() {
     this.rowChoices = resolveRowMetrics(this.config).map((metric, index) => ({
       index,
-      label: "Field " + (index + 1) + ": " + labelFor(this.language, metric),
+      label: this.ui.field + " " + (index + 1) + ": " + labelFor(this.language, metric),
     }));
   },
 
@@ -129,8 +133,7 @@ export default {
   edit(field) {
     if (this.saving) return;
     this._field = field;
-    this.editTitle =
-      field === "siteUrl" ? "Site URL" : field === "competitionId" ? "Race ID" : "Bib number";
+    this.editTitle = this.ui[EDIT_TITLES[field]];
     this.setEdit(this.config[field]);
     const keys = editorKeys(field);
     const rows = [];
@@ -186,14 +189,15 @@ export default {
 
   applySettings() {
     if (this.saving) return;
-    this.error = configError(this.config);
-    if (this.error) return;
+    const error = configError(this.config);
+    this.error = error ? this.ui[error] : "";
+    if (error) return;
     this.saving = true;
     saveConfig(this.config, (saved) => {
       if (!this._alive) return;
       this.saving = false;
       if (!saved) {
-        this.error = "Could not save. Please retry.";
+        this.error = this.ui.saveFailed;
         return;
       }
       const previous = JSON.parse(this._saved);
