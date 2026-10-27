@@ -11,6 +11,8 @@ same UniversalBicycleTeam endpoint by race ID and bib; render server strings.
 - `scripts/build.mjs`: invokes DevEco Studio 6.1.1's SDK through Hvigor.
 - `entry/src/main/config.json`: FA/Lite Wearable manifest, minimum API 10.
 - `test/`: Vitest contract, lifecycle, layout and settings tests.
+- `specs/app/`: the app's behaviour today; `.specify/` holds Spec Kit and the
+  constitution. Claude and Codex both carry the speckit-* skills.
 
 Use console commands and documented APIs. Do not automate the Mac interface.
 No extra MCP is required for builds. GT/FIT use JavaScript Lite Wearable, not
@@ -25,6 +27,7 @@ ArkTS Wearable. Network proxy support needs real-watch verification.
   Honor authorization already given for the task; never merge without it.
 - Gates: npm test, npm run lint, npm run format:check, npm run version:check,
   pre-commit run --all-files, and python3 .codex/hooks/test_post_edit.py.
+- A behaviour change updates its specs/app file in the same pull request.
 - Put testable logic in lib. Ignore unknown/nonstring stats. Failures retain
   standings; changing the rider clears them. Stop polling on hidden pages.
 - Append metric indices, never reorder. Round screens cap at 9 fields and
