@@ -5,5 +5,7 @@
 - [ ] New functionality is covered by automated tests
 - [ ] `npm run format:check`, `npm run lint` and `npm test` pass locally
 - [ ] New user-facing strings are added to every locale
+- [ ] `npm run build` passes, so the page still fits the 48 KB snapshot heap
+- [ ] `specs/app/` describes any behaviour change
 - [ ] CI pipeline is green
 - [ ] Branch is rebased on main before merging
