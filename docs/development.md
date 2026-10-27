@@ -56,6 +56,10 @@ Huawei's JerryScript snapshot compiler. These catch unbundled imports, reserved
 page-method names and unsupported ES5 syntax even when Hvigor reports success.
 Lite Wearable does not accept RegExp literals in this SDK; use indexed loops and
 ES5 string operations. The small runtime shim supplies shared numeric checks.
+The snapshot compiler runs in a 48 KB JerryScript heap, so the whole page bundle
+(bytecode and string literals) must fit there. Hvigor only warns when it does not
+and then ships plain JavaScript; `npm run build` fails instead. Translations are
+packed as one string per language because separate literals cost several KB.
 
 A simulator does not prove Bluetooth proxy support or simultaneous operation
 with the watch's workout recorder. Those need real hardware.
