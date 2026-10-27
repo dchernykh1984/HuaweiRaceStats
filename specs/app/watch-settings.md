@@ -54,6 +54,9 @@ the app on the watch itself.
 - **FR-104** Metric indices are appended to `METRICS`, never reordered.
 - **FR-105** Lite pages receive no back event; a right swipe is the back gesture.
 - **FR-106** While a save is in progress, edits, Cancel and swipes are ignored.
+- **FR-107** Lite wraps text that does not fit, so each settings row stays within
+  28 characters: the site is shown without its scheme and a long value is
+  shortened from the left.
 
 ## Tests
 
