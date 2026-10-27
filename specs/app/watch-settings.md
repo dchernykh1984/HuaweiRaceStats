@@ -16,7 +16,9 @@ the app on the watch itself.
    an on-screen keyboard opens: digits for the race ID, letters, digits and
    `-_.` for the bib, and URL characters for the site.
 4. **Given** the settings list, **when** the rider changes the number of fields
-   or taps a field, **then** they can choose any of the 19 metrics for it.
+   or taps a field, **then** they can choose any of the 19 metrics for it. The
+   count goes up to what the watch draws: 9 on a round screen, 10 on a
+   rectangular one.
 5. **Given** valid values, **when** the rider taps Save, **then** the settings are
    stored and the results screen returns; a different site, race or bib clears
    the old standings.
