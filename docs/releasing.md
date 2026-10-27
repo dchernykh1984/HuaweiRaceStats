@@ -3,8 +3,9 @@
 release-please reads Conventional Commits on main. Its bootstrap is the initial
 repository commit; the initial manifest is 0.0.0 so the first feature release is
 0.1.0. It updates package.json, CHANGELOG.md and the native manifest's version
-name. The build derives the increasing numeric code with version:sync. Do not
-bump these manually. Minor and patch components must stay below 100.
+name. The build derives the increasing numeric code with version:sync for the
+package only and restores the tracked manifest afterwards. Do not bump these
+manually. Minor and patch components must stay below 100.
 
 ## Native release artifacts
 
