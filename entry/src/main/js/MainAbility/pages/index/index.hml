@@ -1,5 +1,5 @@
 <div class="root" style="height: {{ height }}px;">
-  <div if="{{ screen === 'stats' }}" class="dashboard" style="height: {{ height }}px; padding-top: {{ height * 0.1 }}px;" onclick="openSettings">
+  <div if="{{ screen === 'stats' }}" class="dashboard" style="height: {{ height }}px; padding-top: {{ height * 0.1 }}px;" onclick="openSettings" onswipe="swipeBack">
     <div for="{{ band in bands }}" class="band" style="width: {{ band.width }}px; height: {{ band.height }}px;">
       <div for="{{ cell in band.cells }}" class="cell" style="width: {{ cell.width }}px; height: {{ cell.height }}px;">
         <text class="label" style="font-size: {{ cell.labelSize }}px;">{{ cell.label }}</text>
@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <list if="{{ screen === 'settings' }}" class="menu" style="height: {{ height }}px;">
+  <list if="{{ screen === 'settings' }}" class="menu" style="height: {{ height }}px;" onswipe="swipeBack">
     <list-item class="spacer"></list-item>
     <list-item class="menu-row"><text class="heading">Race settings</text></list-item>
     <list-item class="menu-row"><text class="choice" onclick="edit('competitionId')">Race: {{ config.competitionId }}</text></list-item>
@@ -20,7 +20,7 @@
     <list-item class="menu-row"><text class="choice" onclick="cancelSettings">Cancel</text></list-item>
     <list-item class="spacer"></list-item>
   </list>
-  <list if="{{ screen === 'edit' }}" class="menu" style="height: {{ height }}px;">
+  <list if="{{ screen === 'edit' }}" class="menu" style="height: {{ height }}px;" onswipe="swipeBack">
     <list-item class="spacer"></list-item>
     <list-item class="menu-row"><text class="heading">{{ editTitle }}</text></list-item>
     <list-item class="menu-row"><text class="edit-value">{{ editValue }}</text></list-item>
@@ -29,7 +29,7 @@
     <list-item class="menu-row"><text class="control action" onclick="acceptEdit">Done</text><text class="control" onclick="backToSettings">Cancel</text></list-item>
     <list-item class="spacer"></list-item>
   </list>
-  <list if="{{ screen === 'metrics' }}" class="menu" style="height: {{ height }}px;">
+  <list if="{{ screen === 'metrics' }}" class="menu" style="height: {{ height }}px;" onswipe="swipeBack">
     <list-item class="spacer"></list-item>
     <list-item class="menu-row"><text class="heading">Choose metric</text></list-item>
     <list-item for="{{ metricChoices }}" class="menu-row"><text class="choice" onclick="chooseMetric($item.index)">{{ $item.label }}</text></list-item>
