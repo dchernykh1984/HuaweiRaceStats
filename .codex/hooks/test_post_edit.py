@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -11,11 +12,24 @@ import unittest
 from pathlib import Path
 
 SCRIPT = Path(__file__).with_name("post_edit.py")
+REPO = SCRIPT.parents[2]
 SPEC = importlib.util.spec_from_file_location("post_edit", SCRIPT)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError("Cannot load hook")
 HOOK = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HOOK)
+
+
+def pre_commit_ascii_policy() -> tuple[str, str, str]:
+    """The top-level exclude and the no-non-ascii files/exclude from pre-commit."""
+    text = (REPO / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+    top = re.search(r"^exclude: '([^']*)'$", text, re.MULTILINE)
+    hook = text[text.index("id: no-non-ascii") :]
+    files = re.search(r"^\s+files: '([^']*)'$", hook, re.MULTILINE)
+    exclude = re.search(r"^\s+exclude: '([^']*)'$", hook, re.MULTILINE)
+    if not (top and files and exclude):
+        raise AssertionError("pre-commit ASCII policy not found")
+    return top.group(1), files.group(1), exclude.group(1)
 
 
 class PostEditTests(unittest.TestCase):
@@ -158,6 +172,64 @@ class PostEditTests(unittest.TestCase):
                 self.assertEqual(
                     bool(HOOK.violations([path], self.root, checks)), rejected
                 )
+
+    def test_repository_policy_matches_pre_commit(self) -> None:
+        checks = json.loads(SCRIPT.with_name("checks.json").read_text(encoding="utf-8"))
+        top, files, exclude = pre_commit_ascii_policy()
+        samples = [
+            "lib/config.js",
+            "lib/i18n/ui.js",
+            "entry/src/main/js/MainAbility/pages/index/index.hml",
+            "docs/development.md",
+            "CHANGELOG.md",
+            "package-lock.json",
+            "scripts/run.sh",
+            ".specify/memory/constitution.md",
+            ".specify/templates/plan-template.md",
+            ".specify/workflows/speckit/workflow.yml",
+            ".claude/skills/speckit-plan/SKILL.md",
+            ".agents/skills/speckit-plan/SKILL.md",
+            ".claude/skills/review-cycle/SKILL.md",
+            "specs/app/live-stats.md",
+        ]
+        for relative in samples:
+            with self.subTest(path=relative):
+                pre_commit = bool(
+                    re.search(files, relative)
+                    and not re.search(top, relative)
+                    and not re.search(exclude, relative)
+                )
+                hook = bool(
+                    re.search(checks["files"], relative)
+                    and not re.search(checks["exclude"], relative)
+                )
+                self.assertEqual(hook, pre_commit)
+
+    def test_claude_hook_applies_the_shared_policy(self) -> None:
+        (self.root / ".claude/hooks").mkdir(parents=True)
+        (self.root / ".codex/hooks").mkdir(parents=True)
+        script = self.root / ".claude/hooks/check_ascii.py"
+        script.write_bytes((REPO / ".claude/hooks/check_ascii.py").read_bytes())
+        (self.root / ".codex/hooks/checks.json").write_text(
+            json.dumps(self.checks), encoding="utf-8"
+        )
+        translated = self.root / "translations/ru.md"
+        translated.parent.mkdir()
+        outside = tempfile.TemporaryDirectory()
+        self.addCleanup(outside.cleanup)
+        elsewhere = Path(outside.name) / "notes.md"
+        for path in (self.checked, translated, elsewhere):
+            path.write_text(chr(0x416), encoding="utf-8")
+        for path, code in ((self.checked, 2), (translated, 0), (elsewhere, 0)):
+            with self.subTest(path=path.name):
+                result = subprocess.run(  # noqa: S603
+                    [sys.executable, str(script)],
+                    input=json.dumps({"tool_input": {"file_path": str(path)}}),
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                )
+                self.assertEqual(result.returncode, code, result.stderr)
 
     def test_cli_ignores_invalid_json(self) -> None:
         result = subprocess.run(  # noqa: S603

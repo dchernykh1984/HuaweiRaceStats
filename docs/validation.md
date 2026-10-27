@@ -12,8 +12,9 @@ layouts, configurable fields and the same server endpoint are present.
 
 - Vitest tests for metric/locale contracts, settings, URL validation, geometry,
   value formatting, timeout/offline recovery and poller lifecycle.
-- ESLint, Prettier, version check, complete pre-commit gate, actionlint, and 14
-  Codex hook regression tests including HML, TypeScript and JSON5 policy coverage.
+- ESLint, Prettier, version check, complete pre-commit gate, actionlint, and 16
+  Codex and Claude hook regression tests, including HML, TypeScript and JSON5
+  policy coverage and a check that both hooks match the pre-commit ASCII policy.
 - npm audit reports zero vulnerabilities after compatible dependency updates.
 - DevEco Studio 6.1.1 / bundled SDK 24 builds actual unsigned HAP and APP packages.
 - The compiled SDK bundle is executed with native API stubs to exercise dashboard

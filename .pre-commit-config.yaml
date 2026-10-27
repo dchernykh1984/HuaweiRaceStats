@@ -64,8 +64,8 @@ repos:
   - repo: local
     hooks:
       - id: codex-hook-tests
-        name: Codex edit hook regression tests
+        name: Codex and Claude edit hook regression tests
         entry: python .codex/hooks/test_post_edit.py
         language: python
         pass_filenames: false
-        files: ^\.codex/
+        files: ^(\.codex/|\.claude/hooks/|\.pre-commit-config\.yaml$)
