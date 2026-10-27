@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { editorKeys, appendKey } from "../lib/editor.js";
+import { editorKeys, appendKey, visibleTail, EDIT_LINE_CHARS } from "../lib/editor.js";
 import { MAX_STORED_LENGTH } from "../lib/config.js";
 
 describe("watch keyboard", () => {
@@ -12,5 +12,11 @@ describe("watch keyboard", () => {
     expect(appendKey("a".repeat(MAX_STORED_LENGTH), "b", "siteUrl")).toHaveLength(
       MAX_STORED_LENGTH
     );
+  });
+  it("keeps the end of a long value, where typing happens, on the edit line", () => {
+    expect(visibleTail("259")).toBe("259");
+    const url = "https://universalbicycle.team/results";
+    expect(visibleTail(url)).toHaveLength(EDIT_LINE_CHARS);
+    expect(visibleTail(url)).toBe("..." + url.slice(-(EDIT_LINE_CHARS - 3)));
   });
 });

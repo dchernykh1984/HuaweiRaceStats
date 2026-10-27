@@ -14,7 +14,8 @@ the app on the watch itself.
    touch during a race keeps the standings updating.
 3. **Given** the settings list, **when** the rider taps Race, Bib or Site, **then**
    an on-screen keyboard opens: digits for the race ID, letters, digits and
-   `-_.` for the bib, and URL characters for the site.
+   `-_.` for the bib, and URL characters for the site. A value longer than the
+   edit line shows its end, where typing happens.
 4. **Given** the settings list, **when** the rider changes the number of fields
    or taps a field, **then** they can choose any of the 19 metrics for it. The
    count goes up to what the watch draws: 9 on a round screen, 10 on a
