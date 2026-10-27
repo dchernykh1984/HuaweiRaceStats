@@ -52,8 +52,10 @@ by race ID and bib, as the same strings AmazfitRaceStats and GarminRaceStats sho
   hide/resume and synchronous native errors.
 - `test/request-url.test.mjs`, `test/stats-formatter.test.mjs`,
   `test/metrics.test.mjs`: URL building, value formatting, known keys.
+- `test/config.test.mjs`: `sameRider` decides when standings carry over.
 - `scripts/check-native-bundle.mjs` (part of `npm run build`): the compiled page
-  fetches on start, renders `17/84`, stops while hidden and resumes on show.
+  fetches on start, renders `17/84`, clears the standing for a new race, keeps
+  it when only fields change, stops while hidden and resumes on show.
 
 ## Needs real hardware
 
