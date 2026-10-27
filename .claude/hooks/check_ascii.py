@@ -12,15 +12,14 @@ blocking error.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
-# Mirrors the files pattern of the no-non-ascii hook in .pre-commit-config.yaml.
-CHECKED_SUFFIXES = {".mjs", ".js", ".ts", ".css", ".hml", ".yml", ".yaml", ".md", ".json", ".json5", ".py"}
-EXEMPT_NAMES = {"CHANGELOG.md", "package-lock.json"}
-# The on-watch translations are legitimately non-ASCII; the pre-commit hook excludes
-# them by path, so this one has to as well or every locale edit is blocked.
-EXEMPT_PATH_PARTS = ("i18n",)
+ROOT = Path(__file__).resolve().parents[2]
+# The file and exemption patterns are shared with the Codex hook, and mirror the
+# no-non-ascii hook in .pre-commit-config.yaml, so all three gates agree.
+CHECKS = ROOT / ".codex/hooks/checks.json"
 MAX_REPORTED_LINES = 5
 
 
@@ -34,10 +33,12 @@ def main() -> int:
     if not raw_path:
         return 0
 
-    path = Path(raw_path)
-    if path.suffix not in CHECKED_SUFFIXES or path.name in EXEMPT_NAMES:
-        return 0
-    if any(part in EXEMPT_PATH_PARTS for part in path.parts):
+    path = Path(raw_path).resolve()
+    if not path.is_relative_to(ROOT):
+        return 0  # pre-commit only sees repository files
+    relative = path.relative_to(ROOT).as_posix()
+    checks = json.loads(CHECKS.read_text(encoding="utf-8"))
+    if not re.search(checks["files"], relative) or re.search(checks["exclude"], relative):
         return 0
     try:
         text = path.read_text(encoding="utf-8")
