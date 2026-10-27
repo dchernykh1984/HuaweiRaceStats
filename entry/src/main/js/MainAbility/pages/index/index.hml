@@ -23,7 +23,7 @@
   <list if="{{ screen === 'edit' }}" class="menu" style="height: {{ height }}px;" onswipe="swipeBack">
     <list-item class="spacer"></list-item>
     <list-item class="menu-row"><text class="heading">{{ editTitle }}</text></list-item>
-    <list-item class="menu-row"><text class="edit-value">{{ editValue }}</text></list-item>
+    <list-item class="menu-row"><text class="edit-value">{{ editText }}</text></list-item>
     <list-item class="menu-row"><text class="control" onclick="erase">Delete</text><text class="control" onclick="clear">Clear</text></list-item>
     <list-item class="menu-row" for="{{ row in keyRows }}"><text class="key" for="{{ key in row.keys }}" onclick="typeKey(key)">{{ key }}</text></list-item>
     <list-item class="menu-row"><text class="control action" onclick="acceptEdit">Done</text><text class="control" onclick="backToSettings">Cancel</text></list-item>

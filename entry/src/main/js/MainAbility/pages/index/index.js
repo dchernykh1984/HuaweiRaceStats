@@ -5,7 +5,7 @@ import { loadConfig, saveConfig, requestStats } from "../../common/platform.js";
 import { defaultConfig, configError } from "../../common/lib/config.js";
 import { createPoller } from "../../common/lib/polling.js";
 import { dashboardBands, screenFor } from "../../common/lib/dashboard.js";
-import { editorKeys, appendKey } from "../../common/lib/editor.js";
+import { editorKeys, appendKey, visibleTail } from "../../common/lib/editor.js";
 import { METRICS } from "../../common/lib/metrics.js";
 import { maxFields } from "../../common/lib/layout.js";
 import { resolveRowMetrics } from "../../common/lib/settings.js";
@@ -22,6 +22,7 @@ export default {
     height: 466,
     editTitle: "",
     editValue: "",
+    editText: "",
     keyRows: [],
     error: "",
     saving: false,
@@ -130,7 +131,7 @@ export default {
     this._field = field;
     this.editTitle =
       field === "siteUrl" ? "Site URL" : field === "competitionId" ? "Race ID" : "Bib number";
-    this.editValue = this.config[field];
+    this.setEdit(this.config[field]);
     const keys = editorKeys(field);
     const rows = [];
     for (let i = 0; i < keys.length; i += 6) rows.push({ keys: keys.slice(i, i + 6) });
@@ -138,14 +139,18 @@ export default {
     this.screen = "edit";
   },
 
+  setEdit(value) {
+    this.editValue = value;
+    this.editText = visibleTail(value);
+  },
   typeKey(key) {
-    this.editValue = appendKey(this.editValue, key, this._field);
+    this.setEdit(appendKey(this.editValue, key, this._field));
   },
   erase() {
-    this.editValue = this.editValue.slice(0, -1);
+    this.setEdit(this.editValue.slice(0, -1));
   },
   clear() {
-    this.editValue = "";
+    this.setEdit("");
   },
   acceptEdit() {
     this.config[this._field] = this.editValue;
