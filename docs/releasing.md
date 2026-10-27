@@ -1,8 +1,8 @@
 # Releases and AppGallery
 
-release-please reads Conventional Commits on main. Its bootstrap is the initial
-repository commit; the initial manifest is 0.0.0 so the first feature release is
-0.1.0. It updates package.json, CHANGELOG.md and the native manifest's version
+release-please reads Conventional Commits on main from the initial repository
+commit. The first release was 1.0.0 (tag `huawei-race-stats-v1.0.0`); later
+releases bump from the manifest by commit type. It updates package.json, CHANGELOG.md and the native manifest's version
 name. The build derives the increasing numeric code with version:sync for the
 package only and restores the tracked manifest afterwards. Do not bump these
 manually. Minor and patch components must stay below 100.
@@ -34,6 +34,6 @@ repository ignores certificate/profile file types, but review diffs as well.
 Validate a signed build on each supported watch/phone combination, including
 network recovery, settings persistence, fonts, battery behavior and use during
 workouts. Prepare store screenshots, support contacts, release notes and a
-privacy-policy URL, then submit through AppGallery Connect. No signing, account
-registration, store upload, repository merge or public release is performed by
-this initial implementation PR.
+privacy-policy URL, then submit through AppGallery Connect. Signing, account
+registration and store upload are separate explicit actions; a GitHub release
+does not perform them.
