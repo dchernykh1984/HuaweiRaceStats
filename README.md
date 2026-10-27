@@ -35,10 +35,13 @@ run through the console. Set `DEVECO_STUDIO_HOME` if the Contents directory is n
 `/Applications/DevEco-Studio.app/Contents`; set `DEVECO_SDK_HOME` for another SDK.
 No additional MCP is required for compilation.
 
-The initial settings use sample race 259 / bib 1. Tap the results screen to edit
-the site URL, race ID, bib, number of fields, and each field's metric. The watch
-keyboard supports numeric race IDs, alphanumeric bibs and site URLs. Tap Save to
-persist, or Cancel to discard. Scroll the settings and keyboard lists. Metric
+The initial settings use sample race 259 / bib 1. Long-press the results screen
+to edit the site URL, race ID, bib, number of fields, and each field's metric; a
+single tap does nothing, so a stray touch never stops live updates. The watch
+keyboard supports numeric race IDs, alphanumeric bibs and site URLs (up to 127
+characters, the Lite storage limit). Tap Save to persist, or Cancel to discard.
+Swipe right to go back, or to close the app from the results. Scroll the
+settings and keyboard lists. Metric
 captions follow the watch language; settings controls are English, as in Amazfit.
 Round screens display at most 9 fields; rectangular screens display up to 10.
 
