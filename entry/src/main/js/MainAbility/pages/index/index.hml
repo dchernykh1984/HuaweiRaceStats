@@ -10,9 +10,9 @@
   <list if="{{ screen === 'settings' }}" class="menu" style="height: {{ height }}px;" onswipe="swipeBack">
     <list-item class="spacer"></list-item>
     <list-item class="menu-row"><text class="heading">{{ ui.title }}</text></list-item>
-    <list-item class="menu-row"><text class="choice" onclick="edit('competitionId')">{{ ui.race }}: {{ config.competitionId }}</text></list-item>
-    <list-item class="menu-row"><text class="choice" onclick="edit('bib')">{{ ui.bib }}: {{ config.bib }}</text></list-item>
-    <list-item class="menu-row"><text class="choice" onclick="edit('siteUrl')">{{ ui.site }}: {{ config.siteUrl }}</text></list-item>
+    <list-item class="menu-row"><text class="choice" onclick="edit('competitionId')">{{ raceLine }}</text></list-item>
+    <list-item class="menu-row"><text class="choice" onclick="edit('bib')">{{ bibLine }}</text></list-item>
+    <list-item class="menu-row"><text class="choice" onclick="edit('siteUrl')">{{ siteLine }}</text></list-item>
     <list-item class="menu-row"><text class="key" onclick="changeCount(-1)">-</text><text class="count">{{ ui.fields }}: {{ config.rowCount }}</text><text class="key" onclick="changeCount(1)">+</text></list-item>
     <list-item for="{{ rowChoices }}" class="menu-row"><text class="choice" onclick="chooseRow($item.index)">{{ $item.label }}</text></list-item>
     <list-item if="{{ error !== '' }}" class="menu-row"><text class="error">{{ error }}</text></list-item>

@@ -90,6 +90,8 @@ assert.match(JSON.stringify(page.render()), /17\/84/);
 assert.deepEqual(page.render().children[0].events, ["longpress", "swipe"]);
 page.openSettings();
 assert.match(JSON.stringify(page.render()), new RegExp(UI.ru.title));
+// Lite wraps long text, so the site row drops the scheme to stay on one line.
+assert.equal(page.siteLine, UI.ru.site + ": universalbicycle.team");
 assert.equal(page.rowChoices[0].label, UI.ru.field + " 1: " + labelFor("ru", "place_abs"));
 for (let i = 0; i < 10; i++) page.changeCount(1);
 // The round watch draws at most 9 fields, so settings offer no 10th.

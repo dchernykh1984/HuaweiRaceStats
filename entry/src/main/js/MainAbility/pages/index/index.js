@@ -5,7 +5,7 @@ import { loadConfig, saveConfig, requestStats } from "../../common/platform.js";
 import { defaultConfig, configError, sameRider } from "../../common/lib/config.js";
 import { createPoller } from "../../common/lib/polling.js";
 import { dashboardBands, screenFor } from "../../common/lib/dashboard.js";
-import { editorKeys, appendKey, visibleTail } from "../../common/lib/editor.js";
+import { editorKeys, appendKey, visibleTail, settingLine } from "../../common/lib/editor.js";
 import { METRICS } from "../../common/lib/metrics.js";
 import { maxFields } from "../../common/lib/layout.js";
 import { resolveRowMetrics } from "../../common/lib/settings.js";
@@ -26,6 +26,9 @@ export default {
     editTitle: "",
     editValue: "",
     editText: "",
+    raceLine: "",
+    bibLine: "",
+    siteLine: "",
     keyRows: [],
     error: "",
     saving: false,
@@ -116,6 +119,9 @@ export default {
   },
 
   updateRows() {
+    this.raceLine = settingLine(this.ui.race, this.config.competitionId);
+    this.bibLine = settingLine(this.ui.bib, this.config.bib);
+    this.siteLine = settingLine(this.ui.site, this.config.siteUrl);
     this.rowChoices = resolveRowMetrics(this.config).map((metric, index) => ({
       index,
       label: this.ui.field + " " + (index + 1) + ": " + labelFor(this.language, metric),
@@ -157,6 +163,7 @@ export default {
   },
   acceptEdit() {
     this.config[this._field] = this.editValue;
+    this.updateRows();
     this.screen = "settings";
   },
   backToSettings() {
