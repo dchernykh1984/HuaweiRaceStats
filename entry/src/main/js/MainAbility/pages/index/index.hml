@@ -1,5 +1,5 @@
 <div class="root" style="height: {{ height }}px;">
-  <div if="{{ screen === 'stats' }}" class="dashboard" style="height: {{ height }}px; padding-top: {{ height * 0.1 }}px;" onclick="openSettings" onswipe="swipeBack">
+  <div if="{{ screen === 'stats' }}" class="dashboard" style="height: {{ height }}px; padding-top: {{ height * 0.1 }}px;" onlongpress="openSettings" onswipe="swipeBack">
     <div for="{{ band in bands }}" class="band" style="width: {{ band.width }}px; height: {{ band.height }}px;">
       <div for="{{ cell in band.cells }}" class="cell" style="width: {{ cell.width }}px; height: {{ cell.height }}px;">
         <text class="label" style="font-size: {{ cell.labelSize }}px;">{{ cell.label }}</text>

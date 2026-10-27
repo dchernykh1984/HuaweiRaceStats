@@ -75,6 +75,8 @@ assert.equal(page.screen, "stats");
 assert.equal(page.bands[0].cells[0].value, "17/84");
 assert.equal(requests, 1);
 assert.match(JSON.stringify(page.render()), /17\/84/);
+// A stray tap must not leave the results: settings open on a long press.
+assert.deepEqual(page.render().children[0].events, ["longpress", "swipe"]);
 page.openSettings();
 page.changeCount(1);
 page.chooseRow(0);
