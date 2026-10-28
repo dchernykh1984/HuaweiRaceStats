@@ -26,10 +26,32 @@ leaves the build queued, not successful.
 
 Before store submission, register and verify a Huawei developer account, create
 the app with bundle ID io.github.dchernykh1984.huaweiracestats, and obtain Huawei
-release signing credentials/profile. Use the authorized signing configuration
-in a private local build-profile.json5 or a separately managed release checkout.
-Never commit credentials, passwords, certificates or signing profiles. The
-repository ignores certificate/profile file types, but review diffs as well.
+release signing credentials/profile. Never commit credentials, passwords,
+certificates or signing profiles. The repository ignores certificate/profile
+file types, but review diffs as well.
+
+## Signed packages
+
+Keep the release signing files in a private directory outside Git, for example
+`~/.huawei-signing/huaweiracestats`:
+
+- `release.p12`: the keystore with the release key.
+- `release.csr`: the request uploaded to AppGallery Connect.
+- `release.cer` and `release.p7b`: the certificate and release profile
+  downloaded from AppGallery Connect.
+- `signing.json`: the paths and DevEco-style encrypted passwords, with the
+  `material/` folder that decrypts them.
+
+Then run:
+
+```sh
+HUAWEI_SIGNING_DIR=~/.huawei-signing/huaweiracestats npm run build
+```
+
+The build adds the signing configuration to `build-profile.json5` only while
+Hvigor runs and restores the tracked file afterwards. It writes
+`dist/huawei-race-stats-<version>-signed.app` for AppGallery Connect. Back up the
+directory and its password: a lost keystore means a new certificate and profile.
 
 Validate a signed build on each supported watch/phone combination, including
 network recovery, settings persistence, fonts, battery behavior and use during
