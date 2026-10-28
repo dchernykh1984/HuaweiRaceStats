@@ -48,8 +48,10 @@ indices are appended, never reordered, so saved choices keep their meaning.
 
 One logical change per one-line Conventional Commit, without attribution
 trailers. Work is reviewed in cycles and each valid finding is fixed in its own
-commit. A change finishes everything it touches: callers, tests, translations,
-documentation, specifications and the matching Claude and Codex guidance.
+commit. Pull requests are merged by rebase, never squashed, so every commit
+survives on a linear history. A change finishes everything it touches: callers,
+tests, translations, documentation, specifications and the matching Claude and
+Codex guidance.
 
 ### VII. Claims match evidence
 
@@ -82,4 +84,4 @@ maintainer's authorization. Amendments are made in a pull request that states
 the reason and bumps the version below (major: a principle removed or redefined;
 minor: a principle added; patch: wording).
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-27 | **Last Amended**: 2026-10-27
+**Version**: 1.1.0 | **Ratified**: 2026-10-27 | **Last Amended**: 2026-10-28
