@@ -8,4 +8,4 @@
 - [ ] `npm run build` passes, so the page still fits the 48 KB snapshot heap
 - [ ] `specs/app/` describes any behaviour change
 - [ ] CI pipeline is green
-- [ ] Branch is rebased on main before merging
+- [ ] Branch is rebased on main and merged by rebase (never squash)

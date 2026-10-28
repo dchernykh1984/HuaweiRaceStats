@@ -25,6 +25,9 @@ ArkTS Wearable. Network proxy support needs real-watch verification.
   Co-Authored-By trailer or generated-by footer.
 - Pushing, PR creation, merging, tagging and releases require authorization.
   Honor authorization already given for the task; never merge without it.
+- Merge pull requests, release PRs included, by rebase (`gh pr merge --rebase`).
+  Never squash or create merge commits: main keeps a linear history with one
+  commit per change, and the repository rules reject squash merges.
 - Gates: npm test, npm run lint, npm run format:check, npm run version:check,
   pre-commit run --all-files, and python3 .codex/hooks/test_post_edit.py.
 - A behaviour change updates its specs/app file in the same pull request.
