@@ -63,8 +63,10 @@ builds use a trusted macOS runner with DevEco installed and label `huawei-sdk`;
 configure this runner before merging a release PR. No runner is installed by this
 repository. Store submission and signing remain separate explicit actions.
 
-See [development](docs/development.md) for SDK and preview details, and
-[validation](docs/validation.md) for the checks and limits of this first version.
+See [development](docs/development.md) for SDK and preview details,
+[validation](docs/validation.md) for the checks and limits of this first version,
+and [the AppGallery kit](docs/store/README.md) for store listing texts, graphics
+and the [privacy policy](docs/privacy-policy.md).
 
 ## License
 
